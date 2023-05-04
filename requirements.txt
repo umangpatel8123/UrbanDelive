@@ -1,0 +1,6 @@
+black==22.6.0
+django==4.2
+djangorestframework==3.14.0
+django-cors-headers==3.14.0
+django-phonenumber-field==7.1.0
+Pillow==5.1.0
