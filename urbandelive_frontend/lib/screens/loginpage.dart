@@ -34,18 +34,20 @@ class _LoginScreenState extends State<LoginScreen> {
                   textInputType: TextInputType.numberWithOptions(
                       signed: false, decimal: false)),
               const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {},
-                style: const ButtonStyle(
-                    minimumSize: MaterialStatePropertyAll(Size(300, 50))),
-                child: const Text(
-                  "Send OTP",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+              Container(
+                width: MediaQuery.of(context).size.width / 1,
+                height: MediaQuery.of(context).size.height / 20,
+                child: ElevatedButton(
+                  onPressed: () {},
+                  child: const Text(
+                    "Send OTP",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),

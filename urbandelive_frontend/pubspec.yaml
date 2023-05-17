@@ -20,5 +20,5 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - /Users/ishajasani/Desktop/UrbanDeliv/urbandelive_frontend/assets/Carrier.png
-    - /Users/ishajasani/Desktop/UrbanDeliv/urbandelive_frontend/assets/Logo.png
+    - assets/Carrier.png
+    - assets/Logo.png
