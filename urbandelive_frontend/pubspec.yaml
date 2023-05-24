@@ -12,6 +12,15 @@ dependencies:
   cupertino_icons: ^1.0.2
   google_fonts: ^4.0.4
   extended_phone_number_input: ^1.0.2
+  firebase_core: ^2.3.0
+  firebase_auth: ^4.1.5
+  shared_preferences: ^2.1.1
+  provider: ^6.0.5
+  http: ^0.13.6
+  cloud_firestore: ^4.7.1
+  country_picker: ^2.0.20
+  firebase_storage: ^11.2.1
+  pinput: ^2.2.16
 
 dev_dependencies:
   flutter_test:

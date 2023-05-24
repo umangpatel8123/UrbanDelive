@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "242640977096",
+    "project_id": "urbandelive-6c642",
+    "storage_bucket": "urbandelive-6c642.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:242640977096:android:680fed56c108fce6b3f9fd",
+        "android_client_info": {
+          "package_name": "com.example.urbandelive"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "242640977096-q80qk7s67tqc1b5un4poa3vin3ei9j0q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.urbandelive",
+            "certificate_hash": "6dce9f7bcc0ac1720574a9ab25106d595a66e705"
+          }
+        },
+        {
+          "client_id": "242640977096-vaov1443bosq4fr79fom7ghcghaqj6lj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7-iPptrBX0XBHTzJKwqLtYbnWW4nLXQw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "242640977096-vaov1443bosq4fr79fom7ghcghaqj6lj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
