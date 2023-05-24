@@ -27,7 +27,7 @@ class BusinessSerializer(ModelSerializer):
 class UserSerializer(ModelSerializer):
     class Meta:
         model = User
-        fields = ["username", "email", "date_joined", "last_login"]
+        fields = ["uid", "phoneNo", "username", "email", "last_login", "date_joined"]
         read_only_fields = ["username", "email", "date_joined", "last_login"]
 
 

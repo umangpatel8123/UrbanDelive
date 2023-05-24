@@ -16,6 +16,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# customized User models
+AUTH_USER_MODEL='backend.User'
 
 # Application definition
 
@@ -28,7 +30,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # custom apps
     "rest_framework",
-    "phonenumber_field",
     "corsheaders",
     "backend.apps.BackendConfig",
 ]
@@ -114,9 +115,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = 'media/'
+STATIC_URL = "static/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_URL = "media/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

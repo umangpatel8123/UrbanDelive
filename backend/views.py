@@ -4,8 +4,8 @@ from rest_framework.decorators import api_view
 from django.contrib.auth.hashers import make_password
 
 # models
-from django.contrib.auth.models import User
-from .models import Business, Profile, Item, Category
+# from django.contrib.auth.models import User
+from .models import Business, Profile, Item, Category, User
 
 # serializers
 from .serializers import (
@@ -16,15 +16,63 @@ from .serializers import (
     ItemSerializer,
 )
 
-# urls
-
 
 # views
-
-
 @api_view(["GET"])
 def home(request):
-    return Response("Urban Deliv Api")
+    routes = [
+        "Urban Deliv Api",
+        {
+            "Endpoint": "/",
+            "method": "GET",
+            "body": None,
+            "description": "List of all available routes",
+        },
+        {
+            "Endpoint": "checkUser/",
+            "method": "POST",
+            "body": {"uid": ""},
+            "response": {"existing_user": "boolean"},
+            "description": "returns True if user exists else False",
+        },
+    ]
+    return Response(routes)
+
+
+@api_view(["POST"])
+def checkUser(request):
+    if request.method == "POST":
+        data = request.data
+        if User.objects.filter(uid=data["uid"]).exists():
+            return Response({"existing_user": True}, status=200)
+        else:
+            return Response({"existing_user": False}, status=200)
+    else:
+        return Response("Method not allowed", status=405)
+
+
+@api_view(["POST"])
+def getUser(request):
+    if request.method == "POST":
+        uid = request.data["uid"]
+        if User.objects.filter(uid=uid).exists():
+            user = User.objects.get(uid=uid)
+            if Profile.objects.filter(user=user).exists():
+                user_profile = Profile.objects.get(user=user)
+                profile_serialzer = UserProfileSerializer(user_profile, many=False)
+                return Response({"error": False, "user": profile_serialzer}, status=200)
+            else:
+                return Response(
+                    {"error": True, "msg": "User Profile does not exist"},
+                    status=404,
+                )
+        else:
+            return Response(
+                {"error": True, "msg": "User does not exist"},
+                status=404,
+            )
+    else:
+        return Response("Method not allowed", status=405)
 
 
 @api_view(["GET"])
@@ -53,11 +101,12 @@ def allBusiness(request):
 
 @api_view(["GET"])
 def allCategories(request):
-    categories=Category.objects.all()
-    serialized_categories=CategorySerializer(categories,many=True).data
+    categories = Category.objects.all()
+    serialized_categories = CategorySerializer(categories, many=True).data
     print(serialized_categories)
 
     return Response(serialized_categories)
+
 
 @api_view(["GET"])
 def buisnessView(request, businessNameSlug):
@@ -146,7 +195,6 @@ def add_item(request):
 def add_business(request):
     if request.method == "POST":
         data = request.data
-
 
         business = Business.objects.create(
             businessName=data["businessName"],
