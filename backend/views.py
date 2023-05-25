@@ -43,7 +43,7 @@ def home(request):
 def checkUser(request):
     if request.method == "POST":
         data = request.data
-        if User.objects.filter(uid=data["uid"]).exists():
+        if Profile.objects.filter(user=User.objects.get(uid=data["uid"])).exists():
             return Response({"existing_user": True}, status=200)
         else:
             return Response({"existing_user": False}, status=200)
@@ -59,17 +59,17 @@ def getUser(request):
             user = User.objects.get(uid=uid)
             if Profile.objects.filter(user=user).exists():
                 user_profile = Profile.objects.get(user=user)
-                profile_serialzer = UserProfileSerializer(user_profile, many=False)
+                profile_serialzer = UserProfileSerializer(user_profile, many=False).data
                 return Response({"error": False, "user": profile_serialzer}, status=200)
             else:
                 return Response(
                     {"error": True, "msg": "User Profile does not exist"},
-                    status=404,
+                    status=200,
                 )
         else:
             return Response(
                 {"error": True, "msg": "User does not exist"},
-                status=404,
+                status=200,
             )
     else:
         return Response("Method not allowed", status=405)

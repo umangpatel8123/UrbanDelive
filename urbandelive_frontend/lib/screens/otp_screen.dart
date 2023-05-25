@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
 import 'package:urbandelive/provider/auth_provider.dart';
+import 'package:urbandelive/screens/edit_user_details.dart';
 import 'package:urbandelive/screens/home_screen.dart';
 import 'package:urbandelive/screens/login_page.dart';
 import 'package:urbandelive/utils/utils.dart';
@@ -170,15 +171,24 @@ class _OtpScreenState extends State<OtpScreen> {
           if (exists) {
             print("t");
             ap.getDataFromDjango(context: context).then((value) => {
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const HomeScreen(),
-                      ),
-                      (route) => false)
+                  if (value)
+                    {
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const HomeScreen(),
+                          ),
+                          (route) => false)
+                    }
                 });
           } else {
             print("f");
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const UserEditDetail(),
+                ),
+                (route) => false);
           }
         });
         // checking whether user exists in the db

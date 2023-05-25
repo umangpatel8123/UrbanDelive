@@ -149,7 +149,7 @@ class AuthProvider extends ChangeNotifier {
     // }
   }
 
-  Future getDataFromDjango({required BuildContext context}) async {
+  Future<bool> getDataFromDjango({required BuildContext context}) async {
     var url = Uri.parse("http://127.0.0.1:8000/getUser/");
     Map body = {"uid": _uid};
     http.Response response = await http.post(
@@ -157,36 +157,17 @@ class AuthProvider extends ChangeNotifier {
       body: jsonEncode(body),
       headers: {'Content-Type': 'application/json'},
     );
-    // print(response.statusCode);
-    // if (response.statusCode == 200) {
-    //   dynamic res = jsonDecode(response.body);
-    //   print(res);
-    // } else {
-    //   print(response.statusCode);
-    //   dynamic res = jsonDecode(response.body);
-    //   // ignore: use_build_context_synchronously
-    //   showSnackBar(context, res['msg']);
-    // }
+    dynamic res = jsonDecode(response.body);
+    bool ans= res["error"];
+    if (!ans) {
+      // save to user model
 
-    // if (res.) {
-
-    // }
-    // await _firebaseFirestore
-    //     .collection("users")
-    //     .doc(_firebaseAuth.currentUser!.uid)
-    //     .get()
-    //     .then((DocumentSnapshot snapshot) {
-    //   _userModel = UserModel(
-    //     name: snapshot['name'],
-    //     email: snapshot['email'],
-    //     createdAt: snapshot['createdAt'],
-    //     bio: snapshot['bio'],
-    //     uid: snapshot['uid'],
-    //     profilePic: snapshot['profilePic'],
-    //     phoneNumber: snapshot['phoneNumber'],
-    //   );
-    //   _uid = userModel.uid;
-    // });
+      return true;
+    } else {
+      // ignore: use_build_context_synchronously
+      showSnackBar(context, res["msg"]);
+      return false;
+    }
   }
 
   Future saveUserDataToSP() async {
