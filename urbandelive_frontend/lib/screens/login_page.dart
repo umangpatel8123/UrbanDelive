@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:urbandelive/provider/auth_provider.dart';
-import 'package:urbandelive/screens/home_screen.dart';
 import 'package:urbandelive/utils/utils.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -30,13 +29,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final ap = Provider.of<AuthProvider>(context, listen: true);
     var isLoading = Provider.of<AuthProvider>(context, listen: true).isLoading;
 
-    if (ap.isSignedIn) {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const HomeScreen()));
-    }
     final inputborder =
         OutlineInputBorder(borderSide: Divider.createBorderSide(context));
     phoneController.selection = TextSelection.fromPosition(

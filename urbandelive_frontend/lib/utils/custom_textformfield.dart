@@ -5,14 +5,20 @@ class TextInputField extends StatelessWidget {
   final String hintText;
   final TextInputType textInputType;
   final Icon icon;
+  final TextEditingController? textEditingController;
   const TextInputField(
-      {super.key, required this.hintText, required this.textInputType, required this.icon});
+      {super.key,
+      required this.hintText,
+      required this.textInputType,
+      required this.icon,
+      this.textEditingController});
 
   @override
   Widget build(BuildContext context) {
     final inputborder =
         OutlineInputBorder(borderSide: Divider.createBorderSide(context));
     return TextField(
+      controller: textEditingController,
       decoration: InputDecoration(
         hintText: hintText,
         border: inputborder,

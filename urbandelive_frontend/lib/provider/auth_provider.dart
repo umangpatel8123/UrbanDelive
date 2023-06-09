@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:urbandelive/models/user_model.dart';
 import 'package:urbandelive/screens/otp_screen.dart';
 import 'package:urbandelive/utils/utils.dart';
 
@@ -14,6 +16,9 @@ class AuthProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String? _uid;
   String get uid => _uid!;
+
+  UserModel? _userModel;
+  UserModel get userModel => _userModel!;
 
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
@@ -116,37 +121,46 @@ class AuthProvider extends ChangeNotifier {
 
   void saveUserDataToDjango({
     required BuildContext context,
-    // required UserModel userModel,
-    // required File profilePic,
+    required UserModel userModel,
+    required File profilePic,
     required Function onSuccess,
   }) async {
-    // _isLoading = true;
-    // notifyListeners();
-    // try {
-    // uploading image to firebase storage.
-    // await storeFileToStorage("profilePic/$_uid", profilePic).then((value) {
-    //   userModel.profilePic = value;
-    //   userModel.createdAt = DateTime.now().millisecondsSinceEpoch.toString();
-    //   userModel.phoneNumber = _firebaseAuth.currentUser!.phoneNumber!;
-    //   userModel.uid = _firebaseAuth.currentUser!.phoneNumber!;
-    // });
-    // _userModel = userModel;
+    _isLoading = true;
+    notifyListeners();
+    try {
+      // uploading data to Django
+      // var url = Uri.parse("http://127.0.0.1:8000/createUser/");
+      // Map body = {"uid": _uid};
+      // http.Response response = await http.post(
+      //   url,
+      //   body: jsonEncode(body),
+      //   headers: {'Content-Type': 'application/json'},
+      // );
+      // dynamic res = jsonDecode(response.body);
 
-    // uploading to database
-    //   await _firebaseFirestore
-    //       .collection("users")
-    //       .doc(_uid)
-    //       .set(userModel.toMap())
-    //       .then((value) {
-    //     onSuccess();
-    //     _isLoading = false;
-    //     notifyListeners();
-    //   });
-    // } on FirebaseAuthException catch (e) {
-    //   showSnackBar(context, e.message.toString());
-    //   _isLoading = false;
-    //   notifyListeners();
-    // }
+      // await storeFileToStorage("profilePic/$_uid", profilePic).then((value) {
+      //   userModel.profilePic = value;
+      //   userModel.createdAt = DateTime.now().millisecondsSinceEpoch.toString();
+      //   userModel.phoneNumber = _firebaseAuth.currentUser!.phoneNumber!;
+      //   userModel.uid = _firebaseAuth.currentUser!.phoneNumber!;
+      // });
+      // _userModel = userModel;
+
+      // uploading to database
+      // await _firebaseFirestore
+      //     .collection("users")
+      //     .doc(_uid)
+      //     .set(userModel.toMap())
+      //     .then((value) {
+      //   onSuccess();
+      _isLoading = false;
+      notifyListeners();
+      // });
+    } on FirebaseAuthException catch (e) {
+      // showSnackBar(context, e.message.toString());
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 
   Future<bool> getDataFromDjango({required BuildContext context}) async {
@@ -158,10 +172,23 @@ class AuthProvider extends ChangeNotifier {
       headers: {'Content-Type': 'application/json'},
     );
     dynamic res = jsonDecode(response.body);
-    bool ans= res["error"];
+    bool ans = res["error"];
     if (!ans) {
       // save to user model
-
+      dynamic resUser = res["user"];
+      _userModel = UserModel(
+        uid: resUser['user']['uid'],
+        username: resUser['user']['username'],
+        email: resUser['user']['email'],
+        phoneNo: resUser['user']['phoneNo'],
+        createdAt: resUser['user']['date_joined'],
+        lastLogin: resUser['user']['last_login'],
+        dob: resUser['dob'],
+        bio: resUser['bio'],
+        addressLine1: resUser['addressLine1'],
+        addressLine2: resUser['addressLine2'],
+      );
+      _uid = userModel.uid;
       return true;
     } else {
       // ignore: use_build_context_synchronously
@@ -171,16 +198,16 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future saveUserDataToSP() async {
-    // SharedPreferences s = await SharedPreferences.getInstance();
-    // await s.setString("user_model", jsonEncode(userModel.toMap()));
+    SharedPreferences s = await SharedPreferences.getInstance();
+    await s.setString("user_model", jsonEncode(userModel.toMap()));
   }
 
   Future getDataFromSP() async {
-    // SharedPreferences s = await SharedPreferences.getInstance();
-    // String data = s.getString("user_model") ?? '';
-    // _userModel = UserModel.fromMap(jsonDecode(data));
-    // _uid = _userModel!.uid;
-    // notifyListeners();
+    SharedPreferences s = await SharedPreferences.getInstance();
+    String data = s.getString("user_model") ?? '';
+    _userModel = UserModel.fromMap(jsonDecode(data));
+    _uid = _userModel!.uid;
+    notifyListeners();
   }
 
   Future userSignOut() async {

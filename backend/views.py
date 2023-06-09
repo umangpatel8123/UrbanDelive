@@ -52,6 +52,34 @@ def checkUser(request):
 
 
 @api_view(["POST"])
+def createUser(request):
+    if request.method == "POST":
+        data = request.data
+        if Profile.objects.filter(user=User.objects.get(uid=data["uid"])).exists():
+            return Response(
+                {"success": False, "msg": "User Already Exists"}, status=200
+            )
+        else:
+            user = User.objects.create(
+                uid=data["uid"],
+                email=data["email"],
+                phoneNo=data["phoneNo"],
+                username=data["username"],
+                password=make_password["password"],
+            )
+            Profile.objects.create(
+                user=user,
+                dob=data["dob"],
+                bio=data["bio"],
+                addressLine1=data["addressLine1"],
+                addressLine2=data["addressLine2"],
+            )
+            return Response({"success": True}, status=200)
+    else:
+        return Response("Method not allowed", status=405)
+
+
+@api_view(["POST"])
 def getUser(request):
     if request.method == "POST":
         uid = request.data["uid"]

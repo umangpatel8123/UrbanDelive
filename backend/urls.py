@@ -5,6 +5,7 @@ urlpatterns = [
     path("", views.home, name="home"),
     path("checkUser/", views.checkUser, name="checkUser"),
     path("getUser/", views.getUser, name="getUser"),
+    path("createUser/", views.createUser, name="createUser"),
 
     # not yet done
     # path("signUp/", views.SignUp, name="SignUp"),

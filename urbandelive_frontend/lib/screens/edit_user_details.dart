@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:urbandelive/models/user_model.dart';
 import 'package:urbandelive/utils/custom_textformfield.dart';
 
 class UserEditDetail extends StatefulWidget {
@@ -84,7 +85,7 @@ class _UserEditDetailState extends State<UserEditDetail> {
                                 fit: BoxFit.cover,
                               )
                             : Image.asset(
-                                'assets/profile.png',
+                                'Carrier.png',
                                 fit: BoxFit.cover,
                               ),
                       ),
@@ -180,5 +181,27 @@ class _UserEditDetailState extends State<UserEditDetail> {
         ),
       ),
     );
+  }
+
+  void saveToDj (){
+
+// validation
+
+    UserModel user = UserModel(
+      firstName: firstNameController.text,
+      lastName: lastNameController.text,
+      email: emailController.text,
+      dateOfBirth: dateOfBirthController.text,
+      contactNumber: contactNumberController.text,
+      addressLine1: addressLine1Controller.text,
+      addressLine2: addressLine2Controller.text,
+    );
+
+    final ap = Provider.of<AuthProvider>(context, listen: false);
+    ap.saveUserToDjango({
+      context: context,
+      user: user, 
+      u
+    })
   }
 }

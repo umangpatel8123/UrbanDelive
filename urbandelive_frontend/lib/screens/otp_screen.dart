@@ -169,20 +169,21 @@ class _OtpScreenState extends State<OtpScreen> {
       onSuccess: () {
         ap.checkExistingUser().then((exists) async {
           if (exists) {
-            print("t");
-            ap.getDataFromDjango(context: context).then((value) => {
-                  if (value)
-                    {
-                      Navigator.pushAndRemoveUntil(
+            ap
+                .getDataFromDjango(context: context)
+                .then((value) => ap.saveUserDataToSP())
+                .then(
+                  (value) => ap.setSignIn().then(
+                        (value) => Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
                             builder: (context) => const HomeScreen(),
                           ),
-                          (route) => false)
-                    }
-                });
+                          (route) => false,
+                        ),
+                      ),
+                );
           } else {
-            print("f");
             Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
