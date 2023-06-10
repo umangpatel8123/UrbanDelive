@@ -43,8 +43,12 @@ def home(request):
 def checkUser(request):
     if request.method == "POST":
         data = request.data
-        if Profile.objects.filter(user=User.objects.get(uid=data["uid"])).exists():
-            return Response({"existing_user": True}, status=200)
+        if User.objects.filter(uid=data["uid"]).exists():
+            user = User.objects.get(uid=data["uid"])
+            if Profile.objects.filter(user=user).exists():
+                return Response({"existing_user": True}, status=200)
+            else:
+                return Response({"existing_user": False}, status=200)
         else:
             return Response({"existing_user": False}, status=200)
     else:
@@ -55,7 +59,7 @@ def checkUser(request):
 def createUser(request):
     if request.method == "POST":
         data = request.data
-        if Profile.objects.filter(user=User.objects.get(uid=data["uid"])).exists():
+        if User.objects.filter(uid=data["uid"]).exists():
             return Response(
                 {"success": False, "msg": "User Already Exists"}, status=200
             )
@@ -65,15 +69,18 @@ def createUser(request):
                 email=data["email"],
                 phoneNo=data["phoneNo"],
                 username=data["username"],
-                password=make_password["password"],
+                password=make_password(data["password"]),
             )
-            Profile.objects.create(
+            user.save()
+            profile = Profile.objects.create(
                 user=user,
-                dob=data["dob"],
+                # dob=data["dob"],
+                dob="2020-01-01",
                 bio=data["bio"],
                 addressLine1=data["addressLine1"],
                 addressLine2=data["addressLine2"],
             )
+            profile.save()
             return Response({"success": True}, status=200)
     else:
         return Response("Method not allowed", status=405)

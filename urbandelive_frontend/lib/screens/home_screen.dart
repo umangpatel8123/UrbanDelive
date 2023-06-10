@@ -17,7 +17,7 @@ class HomeScreen extends StatelessWidget {
       body: ElevatedButton(
           onPressed: () {
             ap.userSignOut().then(
-                  (value) => Navigator.push(
+                  (value) => Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
                       builder: (context) => const WelcomeScreen(),

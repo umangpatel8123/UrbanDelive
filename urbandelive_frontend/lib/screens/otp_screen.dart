@@ -9,7 +9,11 @@ import 'package:urbandelive/utils/utils.dart';
 
 class OtpScreen extends StatefulWidget {
   final String verificationId;
-  const OtpScreen({super.key, required this.verificationId});
+  final String phoneNumber;
+
+  const OtpScreen(
+      {Key? key, required this.verificationId, required this.phoneNumber})
+      : super(key: key);
 
   @override
   State<OtpScreen> createState() => _OtpScreenState();
@@ -67,7 +71,7 @@ class _OtpScreenState extends State<OtpScreen> {
                         ),
                         const SizedBox(height: 10),
                         const Text(
-                          "Enter the OTP send to your phone number",
+                          "Enter the OTP sent to your phone number",
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.black38,
@@ -108,12 +112,12 @@ class _OtpScreenState extends State<OtpScreen> {
                               if (otpCode != null) {
                                 verifyOtp(context, otpCode!);
                               } else {
-                                showSnackBar(context, "Enter 6-Digit code");
+                                showSnackBar(context, "Enter a 6-Digit code");
                               }
                             },
-                            style: const ButtonStyle(
+                            style: ButtonStyle(
                                 minimumSize:
-                                    MaterialStatePropertyAll(Size(300, 50))),
+                                    MaterialStateProperty.all(Size(300, 50))),
                             child: const Text(
                               "Verify",
                               style: TextStyle(
@@ -187,7 +191,8 @@ class _OtpScreenState extends State<OtpScreen> {
             Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const UserEditDetail(),
+                  builder: (context) =>
+                      UserEditDetail(phoneNumber: widget.phoneNumber),
                 ),
                 (route) => false);
           }

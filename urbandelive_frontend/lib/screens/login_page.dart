@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:urbandelive/provider/auth_provider.dart';
+import 'package:urbandelive/screens/edit_user_details.dart';
 import 'package:urbandelive/utils/utils.dart';
 
 class LoginScreen extends StatefulWidget {

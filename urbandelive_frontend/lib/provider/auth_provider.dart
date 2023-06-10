@@ -57,7 +57,10 @@ class AuthProvider extends ChangeNotifier {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => OtpScreen(verificationId: verificationId),
+              builder: (context) => OtpScreen(
+                verificationId: verificationId,
+                phoneNumber: phoneNumber,
+              ),
             ),
           );
         },
@@ -121,43 +124,42 @@ class AuthProvider extends ChangeNotifier {
 
   void saveUserDataToDjango({
     required BuildContext context,
-    required UserModel userModel,
-    required File profilePic,
+    required UserModel userModel2,
+    // required File profilePic,
     required Function onSuccess,
   }) async {
     _isLoading = true;
     notifyListeners();
     try {
       // uploading data to Django
-      // var url = Uri.parse("http://127.0.0.1:8000/createUser/");
-      // Map body = {"uid": _uid};
-      // http.Response response = await http.post(
-      //   url,
-      //   body: jsonEncode(body),
-      //   headers: {'Content-Type': 'application/json'},
-      // );
-      // dynamic res = jsonDecode(response.body);
+      var url = Uri.parse("http://127.0.0.1:8000/createUser/");
+      Map body = {
+        "uid": userModel2.uid,
+        "username": userModel2.username,
+        "password": "12345678",
+        "email": userModel2.email,
+        "phoneNo": userModel2.phoneNo,
+        "createdAt": userModel2.createdAt,
+        "lastLogin": userModel2.lastLogin,
+        "dob": userModel2.dob,
+        "bio": userModel2.bio,
+        "addressLine1": userModel2.addressLine1,
+        "addressLine2": userModel2.addressLine2,
+      };
+      http.Response response = await http.post(
+        url,
+        body: jsonEncode(body),
+        headers: {'Content-Type': 'application/json'},
+      );
+      dynamic res = await jsonDecode(response.body);
+      _userModel = userModel2;
+      _uid = userModel.uid;
 
-      // await storeFileToStorage("profilePic/$_uid", profilePic).then((value) {
-      //   userModel.profilePic = value;
-      //   userModel.createdAt = DateTime.now().millisecondsSinceEpoch.toString();
-      //   userModel.phoneNumber = _firebaseAuth.currentUser!.phoneNumber!;
-      //   userModel.uid = _firebaseAuth.currentUser!.phoneNumber!;
-      // });
-      // _userModel = userModel;
-
-      // uploading to database
-      // await _firebaseFirestore
-      //     .collection("users")
-      //     .doc(_uid)
-      //     .set(userModel.toMap())
-      //     .then((value) {
-      //   onSuccess();
+      onSuccess();
       _isLoading = false;
       notifyListeners();
-      // });
     } on FirebaseAuthException catch (e) {
-      // showSnackBar(context, e.message.toString());
+      showSnackBar(context, e.message.toString());
       _isLoading = false;
       notifyListeners();
     }
