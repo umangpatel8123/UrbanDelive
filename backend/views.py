@@ -35,6 +35,24 @@ def home(request):
             "response": {"existing_user": "boolean"},
             "description": "returns True if user exists else False",
         },
+        {
+            "Endpoint": "getUser/",
+            "method": "POST",
+            "body": {"uid": ""},
+            "response": None,
+            "description": "returns User data",
+        },
+        {
+            "Endpoint": "allBusinesses/",
+            "method": "GET",
+            "body": None,
+            "response": {
+                "businesses": {
+                    "asdf": "asdf",
+                },
+            },
+            "description": "returns all businesses",
+        },
     ]
     return Response(routes)
 
@@ -63,6 +81,8 @@ def createUser(request):
             return Response(
                 {"success": False, "msg": "User Already Exists"}, status=200
             )
+        elif User.objects.filter(username=data["username"]).exists():
+            return Response({"success": False, "msg": "User Taken"}, status=200)
         else:
             user = User.objects.create(
                 uid=data["uid"],
@@ -74,14 +94,14 @@ def createUser(request):
             user.save()
             profile = Profile.objects.create(
                 user=user,
-                # dob=data["dob"],
-                dob="2020-01-01",
+                dob=data["dob"],
                 bio=data["bio"],
                 addressLine1=data["addressLine1"],
                 addressLine2=data["addressLine2"],
             )
             profile.save()
             return Response({"success": True}, status=200)
+
     else:
         return Response("Method not allowed", status=405)
 

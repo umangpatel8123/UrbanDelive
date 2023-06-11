@@ -12,7 +12,7 @@ class User(AbstractUser):
     phoneNo = models.CharField(
         max_length=15, blank=False, unique=True, default="+441234123412"
     )
-    username = models.CharField(max_length=50)
+    username = models.CharField(max_length=50,unique=True)
     last_login = models.DateTimeField(auto_now=True)
 
     EMAIL_FIELD = "email"
