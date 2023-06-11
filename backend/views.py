@@ -151,7 +151,7 @@ def allBusiness(request):
             business_near_by, many=True
         ).data
 
-        return Response(serialized_business_near_by)
+        return Response({"businesses": serialized_business_near_by}, status=200)
 
 
 @api_view(["GET"])
