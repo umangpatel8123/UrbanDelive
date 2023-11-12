@@ -67,6 +67,9 @@ class Business(models.Model):
 class Category(models.Model):
     categoryName = models.CharField(max_length=25)
     categoryType = models.CharField(max_length=25)
+    categoryImage = models.ImageField(
+        upload_to="categoryImage", blank=True, default="blank-profile-picture.png"
+    )
     items = models.ManyToManyField("Item", blank=True)
 
     def __str__(self):

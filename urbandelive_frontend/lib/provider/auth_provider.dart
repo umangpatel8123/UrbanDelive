@@ -1,12 +1,15 @@
 import 'dart:convert';
-import 'dart:io';
+import 'dart:js';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:urbandelive/models/categories_model.dart';
+import 'package:urbandelive/models/item_model.dart';
 import 'package:urbandelive/models/user_model.dart';
 import 'package:urbandelive/screens/otp_screen.dart';
 import 'package:urbandelive/utils/utils.dart';
-
+import '../models/business_model.dart';
 import 'package:http/http.dart' as http;
 
 class AuthProvider extends ChangeNotifier {
@@ -16,11 +19,22 @@ class AuthProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String? _uid;
   String get uid => _uid!;
-
+  List<BusinessModel> businessess = [];
+  // BusinessModel get BusinessModel => _businessModel!;
   UserModel? _userModel;
   UserModel get userModel => _userModel!;
+  List<BusinessModel> _businesses = [];
+  List<BusinessModel> get businesses => _businesses;
+  List<CategoriesModel> _categories = [];
+  List<CategoriesModel> get categories => _categories;
+  List<ItemModel> _items = [];
+  List<ItemModel> get items => _items;
+
+  List<ItemModel> allItems = [];
 
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  // final bp =
+  //     Provider.of<BusinessProvider>(context as BuildContext, listen: true);
 
   AuthProvider() {
     checkSign();
@@ -155,7 +169,11 @@ class AuthProvider extends ChangeNotifier {
       _userModel = userModel2;
       _uid = userModel.uid;
 
-      onSuccess();
+      if (res["error"]) {
+        showSnackBar(context, res["msg"]);
+      } else {
+        onSuccess();
+      }
       _isLoading = false;
       notifyListeners();
     } on FirebaseAuthException catch (e) {
@@ -198,6 +216,67 @@ class AuthProvider extends ChangeNotifier {
       return false;
     }
   }
+
+  Future<void> fetchBusinesses() async {
+    _isLoading = true;
+    var url = Uri.parse("http://127.0.0.1:8000/allBusinesses/");
+    http.Response response = await http.get(url);
+    dynamic res = jsonDecode(response.body);
+    // print(res["businesses"].length);
+    // print(res["businesses"][1]["categories"][0]["items"][0]);
+    // print(res["businesses"][1]["categories"][1]["items"][0]);
+    // for (int i = 0; i < res["businesses"].length; i++) {
+    //   List<CategoriesModel> fetchedCategories =
+    //       CategoriesModel.fromMapList(res["businesses"][i]["categories"]);
+    //   for (int j = 0; j < res["businesses"][i]["categories"].length; j++) {
+    //     List<ItemModel> fetchedItems = ItemModel.fromMapList(
+    //         res["businesses"][i]["categories"][j]["items"]);
+    //     _items = fetchedItems;
+    //     allItems.addAll(fetchedItems);
+    //   }
+    //   _categories = fetchedCategories;
+    // }
+    // print(_categories[0].items[0].id);
+    for (var e in res["businesses"]) {
+      List<CategoriesModel> fetchedCategories =
+          CategoriesModel.fromMapList(e["categories"]);
+      for (var i in e["categories"]) {
+        List<ItemModel> fetchedItems = ItemModel.fromMapList(i["items"]);
+        _items = fetchedItems;
+        allItems.addAll(fetchedItems);
+      }
+      _categories = fetchedCategories;
+    }
+
+    List<BusinessModel> fetchedBusinesses =
+        BusinessModel.fromMapList(res["businesses"]);
+    // print(res["businesses"]);
+    // Access the BusinessProvider instance and update the businesses list
+    // await fetchCategories();
+    // print(fetchedBusinesses);
+    // _categories = res["businesses"][0]["categories"];
+    // print(categories.length);
+    // print(categories[1].items.length);
+    // print(items.length);
+    _businesses = fetchedBusinesses;
+    _isLoading = false;
+    notifyListeners();
+  }
+
+  // Future<void> fetchCategories() async {
+  //   _isLoading = true;
+  //   var url = Uri.parse("http://127.0.0.1:8000/allBusinesses/");
+  //   http.Response response = await http.get(url);
+  //   dynamic res = jsonDecode(response.body);
+
+  //   List<BusinessModel> fetchedBusinesses =
+  //       BusinessModel.fromMapList(res["businesses"]);
+  //   print(res["businesses"]);
+  //   // Access the BusinessProvider instance and update the businesses list
+  //   _businesses = fetchedBusinesses;
+  //   _isLoading = false;
+  //   notifyListeners();
+  // }
 
   Future saveUserDataToSP() async {
     SharedPreferences s = await SharedPreferences.getInstance();

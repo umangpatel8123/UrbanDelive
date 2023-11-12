@@ -56,11 +56,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     // ignore: prefer_const_literals_to_create_immutables
                     children: [
                       const SizedBox(height: 50),
-                      Image.asset('assets/Logo.png'),
+                      Image.asset('Logo.png'),
                       const SizedBox(height: 30),
                       Align(
                         alignment: Alignment.center,
-                        child: Image.asset('assets/Carrier.png'),
+                        child: Image.asset('Carrier.png'),
                       ),
                       const SizedBox(height: 40),
                       TextFormField(

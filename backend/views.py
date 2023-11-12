@@ -77,31 +77,35 @@ def checkUser(request):
 def createUser(request):
     if request.method == "POST":
         data = request.data
-        if User.objects.filter(uid=data["uid"]).exists():
-            return Response(
-                {"success": False, "msg": "User Already Exists"}, status=200
-            )
-        elif User.objects.filter(username=data["username"]).exists():
-            return Response({"success": False, "msg": "User Taken"}, status=200)
-        else:
-            user = User.objects.create(
-                uid=data["uid"],
-                email=data["email"],
-                phoneNo=data["phoneNo"],
-                username=data["username"],
-                password=make_password(data["password"]),
-            )
-            user.save()
-            profile = Profile.objects.create(
-                user=user,
-                dob=data["dob"],
-                bio=data["bio"],
-                addressLine1=data["addressLine1"],
-                addressLine2=data["addressLine2"],
-            )
-            profile.save()
-            return Response({"success": True}, status=200)
-
+        try:
+            if User.objects.filter(uid=data["uid"]).exists():
+                return Response(
+                    {"error": True, "msg": "User Already Exists"}, status=200
+                )
+            elif User.objects.filter(username=data["username"]).exists():
+                return Response({"error": True, "msg": "User Taken"}, status=200)
+            elif data["username"] == "" or data["username"] == None:
+                return Response({"error": True, "msg": "User Taken"}, status=200)
+            else:
+                user = User.objects.create(
+                    uid=data["uid"],
+                    email=data["email"],
+                    phoneNo=data["phoneNo"],
+                    username=data["username"],
+                    password=make_password(data["password"]),
+                )
+                user.save()
+                profile = Profile.objects.create(
+                    user=user,
+                    dob=data["dob"],
+                    bio=data["bio"],
+                    addressLine1=data["addressLine1"],
+                    addressLine2=data["addressLine2"],
+                )
+                profile.save()
+                return Response({"error": False}, status=200)
+        except Exception as e:
+            return Response({"error": True, "msg": "Internl Server Error"}, status=400)
     else:
         return Response("Method not allowed", status=405)
 
@@ -146,8 +150,8 @@ def userProfile(request, username):
 @api_view(["GET"])
 def allBusiness(request):
     if request.method == "GET":
-        business_near_by = Profile.objects.all().exclude(isBusiness=None)
-        serialized_business_near_by = UserProfileSerializer(
+        business_near_by = Business.objects.all()
+        serialized_business_near_by = BusinessSerializer(
             business_near_by, many=True
         ).data
 

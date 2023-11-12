@@ -4,7 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:urbandelive/provider/auth_provider.dart';
+import 'package:urbandelive/screens/edit_user_details.dart';
+import 'package:urbandelive/screens/home_screen.dart';
+import 'package:urbandelive/screens/login_page.dart';
+import 'package:urbandelive/screens/searchby_business.dart';
 import 'package:urbandelive/screens/welcome_screen.dart';
+import 'utils/routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,6 +31,7 @@ class UrbanDelive extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
+        // ChangeNotifierProvider(create: (_) => BusinessProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -34,7 +40,16 @@ class UrbanDelive extends StatelessWidget {
           primarySwatch: Colors.green,
           textTheme: GoogleFonts.poppinsTextTheme(),
         ),
-        home: const WelcomeScreen(),
+        // home: const WelcomeScreen(),
+        initialRoute: "/",
+        routes: {
+          "/": (context) => const WelcomeScreen(),
+          MyRoute.searchbyBusinessRoute: (context) => const SearchByBusiness(),
+          MyRoute.welcomeScreenRoute: (context) => const WelcomeScreen(),
+          MyRoute.editUserDetailRoute: (context) => const UserEditDetail(
+                phoneNumber: '',
+              ),
+        },
       ),
     );
   }

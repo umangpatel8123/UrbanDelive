@@ -4,6 +4,7 @@ import 'package:urbandelive/provider/auth_provider.dart';
 import 'package:urbandelive/screens/home_screen.dart';
 import 'package:urbandelive/screens/login_page.dart';
 import 'package:urbandelive/utils/custom_button.dart';
+import 'package:urbandelive/widgets/navbar.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -53,12 +54,14 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   height: 50,
                   child: CustomButton(
                     onPressed: () async {
+                      ap.fetchBusinesses();
+
                       if (ap.isSignedIn == true) {
                         await ap.getDataFromSP().whenComplete(
                               () => Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const HomeScreen(),
+                                  builder: (context) => const NavBar(),
                                 ),
                               ),
                             );

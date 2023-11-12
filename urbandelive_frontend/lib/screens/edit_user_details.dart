@@ -7,6 +7,8 @@ import 'package:provider/provider.dart';
 import 'package:urbandelive/models/user_model.dart';
 import 'package:urbandelive/screens/home_screen.dart';
 import 'package:urbandelive/screens/user_detail.dart';
+import 'package:urbandelive/utils/utils.dart';
+import 'package:urbandelive/widgets/navbar.dart';
 import '../provider/auth_provider.dart';
 import '../utils/custom_textformfield.dart';
 
@@ -39,7 +41,7 @@ class _UserEditDetailState extends State<UserEditDetail> {
   String _DOB = '';
 
   void updateDOB() {
-    _DOB = '$_month/$_day/$_year';
+    _DOB = '$_year-$_month-$_day';
   }
 
   File? _image;
@@ -294,11 +296,11 @@ class _UserEditDetailState extends State<UserEditDetail> {
 
                           if (form.validate()) {
                             saveData();
-                            final e = email.text;
-                            ScaffoldMessenger.of(context)
-                              ..removeCurrentSnackBar()
-                              ..showSnackBar(
-                                  SnackBar(content: Text("Your email is $e")));
+                            // final e = email.text;
+                            // ScaffoldMessenger.of(context)
+                            //   ..removeCurrentSnackBar()
+                            //   ..showSnackBar(
+                            //       SnackBar(content: Text("Your email is $e")));
                           }
                         },
                         child: const Text(
@@ -353,7 +355,7 @@ class _UserEditDetailState extends State<UserEditDetail> {
             await Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
-                builder: (context) => const HomeScreen(),
+                builder: (context) => const NavBar(),
               ),
               (route) => false,
             );

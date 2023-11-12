@@ -6,6 +6,7 @@ import 'package:urbandelive/screens/edit_user_details.dart';
 import 'package:urbandelive/screens/home_screen.dart';
 import 'package:urbandelive/screens/login_page.dart';
 import 'package:urbandelive/utils/utils.dart';
+import 'package:urbandelive/widgets/navbar.dart';
 
 class OtpScreen extends StatefulWidget {
   final String verificationId;
@@ -58,7 +59,7 @@ class _OtpScreenState extends State<OtpScreen> {
                             color: Colors.purple.shade50,
                           ),
                           child: Image.asset(
-                            "assets/Carrier.png",
+                            "Carrier.png",
                           ),
                         ),
                         const SizedBox(height: 20),
@@ -181,7 +182,7 @@ class _OtpScreenState extends State<OtpScreen> {
                         (value) => Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const HomeScreen(),
+                            builder: (context) => const NavBar(),
                           ),
                           (route) => false,
                         ),

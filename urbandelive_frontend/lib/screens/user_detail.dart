@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:urbandelive/models/user_model.dart';
+import 'package:urbandelive/utils/routes.dart';
 
 import '../provider/auth_provider.dart';
 
@@ -22,7 +23,7 @@ class UserDetail extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Edit Your Details",
+          "Profile",
           style: TextStyle(fontSize: 30),
         ),
       ),
@@ -310,29 +311,31 @@ class UserDetail extends StatelessWidget {
                     child: SizedBox(
                       width: MediaQuery.of(context).size.width / 1.1,
                       height: MediaQuery.of(context).size.height / 20,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // Navigator.pushNamed(
-                          //     context, MyRoutes.userDetailRoute);
-                          // final form = formKey.currentState!;
+                      // child: ElevatedButton(
+                      //   onPressed: () {
+                      //     Navigator.pushNamed(
+                      //         context, MyRoute.editUserDetailRoute);
+                      //     // Navigator.pushNamed(
+                      //     //     context, MyRoutes.userDetailRoute);
+                      //     // final form = formKey.currentState!;
 
-                          // if (form.validate()) {
-                          //   controls();
-                          //   final e = email.text;
-                          //   ScaffoldMessenger.of(context)
-                          //     ..removeCurrentSnackBar()
-                          //     ..showSnackBar(
-                          //         SnackBar(content: Text("Your email is $e")));
-                          // }
-                        },
-                        child: const Text(
-                          "Edit Details",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
+                      //     // if (form.validate()) {
+                      //     //   controls();
+                      //     //   final e = email.text;
+                      //     //   ScaffoldMessenger.of(context)
+                      //     //     ..removeCurrentSnackBar()
+                      //     //     ..showSnackBar(
+                      //     //         SnackBar(content: Text("Your email is $e")));
+                      //     // }
+                      //   },
+                      //   child: const Text(
+                      //     "Edit Details",
+                      //     style: TextStyle(
+                      //       fontSize: 20,
+                      //       fontWeight: FontWeight.bold,
+                      //     ),
+                      //   ),
+                      // ),
                     ),
                   ),
                 ],
